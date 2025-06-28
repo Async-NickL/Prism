@@ -58,7 +58,7 @@ export default function CreateProjectPage() {
       toast.success("Project created successfully!");
       router.push(`/project/${project.id}`);
     }
-  }, [project]);
+  }, [project, router]);
 
   if (!isOrgLoaded || !isUserLoaded) {
     return null;

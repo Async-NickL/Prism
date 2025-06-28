@@ -49,7 +49,7 @@ export default function SprintBoard({ sprints, projectId, orgId }) {
         if (currentSprint.id) {
             fetchIssues(currentSprint.id);
         }
-    }, [currentSprint.id]);
+    }, [currentSprint.id, fetchIssues]);
 
     const handleAddIssue = (status) => {
         setSelectedStatus(status);

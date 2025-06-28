@@ -65,7 +65,7 @@ export default function IssueCreationDrawer({
         if (isOpen && orgId) {
             fetchUsers(orgId);
         }
-    }, [isOpen, orgId]);
+    }, [isOpen, orgId, fetchUsers]);
 
     const onSubmit = async (data) => {
         await createIssueFn(projectId, {
@@ -81,7 +81,7 @@ export default function IssueCreationDrawer({
             onClose();
             onIssueCreated();
         }
-    }, [newIssue, createIssueLoading]);
+    }, [newIssue, createIssueLoading, onClose, onIssueCreated, reset]);
 
     return (
         <Drawer open={isOpen} onClose={onClose} modal={false} >

@@ -8,31 +8,31 @@ const testimonials = [
     {
         name: "Pratik Mane",
         role: "FullStack Intern",
-        company: "Appwizer Solution", 
+        company: "Appwizer Solution",
         feedback: "Prism has revolutionized how we manage our projects. The organization-based structure and sprint management features are incredibly intuitive."
     },
     {
         name: "Pranav Naik",
         role: "FullStack Intern",
-        company: "Appwizer Solution", 
+        company: "Appwizer Solution",
         feedback: "The Kanban board and issue tracking system is exactly what our team needed. It's made our workflow so much more efficient."
     },
     {
         name: "Om Patil",
         role: "AI Intern",
-        company: "Neuday AI", 
+        company: "Neuday AI",
         feedback: "As an AI intern, I appreciate the clean interface and role-based access control. It makes collaboration seamless across different teams."
     },
     {
         name: "Swapnil Dudhane",
         role: "AI Intern",
-        company: "Neuday AI", 
+        company: "Neuday AI",
         feedback: "The real-time feedback and modern UI make Prism stand out. It's not just functional, it's a pleasure to use."
     },
     {
         name: "Amey Nakil",
         role: "Intern",
-        company: "Wolfox Solutions", 
+        company: "Wolfox Solutions",
         feedback: "Prism's sprint planning features have transformed how we organize our development cycles. Highly recommended for any tech team."
     },
     {
@@ -74,7 +74,7 @@ const Feedback = () => {
                                         </div>
                                     </div>
                                     <p className="text-sm text-muted-foreground leading-relaxed">
-                                        "{testimonial.feedback}"
+                                        &ldquo;{testimonial.feedback}&rdquo;
                                     </p>
                                 </CardContent>
                             </Card>

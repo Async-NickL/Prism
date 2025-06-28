@@ -57,7 +57,7 @@ export default function SprintManager({
                 status: updatedStatus.sprint.status,
             });
         }
-    }, [updatedStatus, loading]);
+    }, [updatedStatus, loading, setSprint, sprint]);
 
     const getStatusText = () => {
         if (status === "COMPLETED") {
@@ -81,7 +81,7 @@ export default function SprintManager({
                 setStatus(selectedSprint.status);
             }
         }
-    }, [searchParams, sprints]);
+    }, [searchParams, sprints, setSprint, sprint.id]);
 
     const handleSprintChange = (value) => {
         const selectedSprint = sprints.find((s) => s.id === value);

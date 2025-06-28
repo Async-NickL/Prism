@@ -80,7 +80,7 @@ export default function IssueDetailsDialog({
         if (updated) {
             onUpdate(updated);
         }
-    }, [deleted, updated, deleteLoading, updateLoading]);
+    }, [deleted, updated, deleteLoading, updateLoading, onClose, onDelete, onUpdate]);
 
     const canChange =
         user.id === issue.reporter.clerkUserId || membership.role === "org:admin";
