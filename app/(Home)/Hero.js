@@ -7,7 +7,7 @@ const Hero = () => {
   return (
     <div className="h-[calc(100vh-3.5rem)] border-b-2 mb-10 select-none relative flex w-full justify-center items-center overflow-hidden bg-background">
       <div className="absolute inset-0 w-full h-full max-sm:mt-[10vh] max-sm:h-[70vh]">
-        <Spline scene="https://prod.spline.design/s08getnkZ9zYv0LD/scene.splinecode" className="dark:opacity-100 opacity-20"/>
+        <Spline scene="https://prod.spline.design/s08getnkZ9zYv0LD/scene.splinecode" className="dark:opacity-100 opacity-20 max-md:pointer-events-none"/>
         <div className="hider absolute bg-background h-15 z-[1] bottom-4 right-4 w-42"></div>
       </div>
 
