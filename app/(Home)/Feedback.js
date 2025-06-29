@@ -78,17 +78,11 @@ TestimonialCard.displayName = 'TestimonialCard';
 
 const Feedback = React.memo(() => {
     const [isMobile, setIsMobile] = useState(false);
-    const [isLowPerformance, setIsLowPerformance] = useState(false);
 
     useEffect(() => {
         const checkDevice = () => {
             const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
             setIsMobile(isMobileDevice);
-
-            const cores = navigator.hardwareConcurrency || 1;
-            const memory = navigator.deviceMemory || 1;
-            const isLowEnd = cores <= 2 || memory <= 2;
-            setIsLowPerformance(isLowEnd);
         };
 
         checkDevice();
@@ -97,30 +91,6 @@ const Feedback = React.memo(() => {
     }, []);
 
     const memoizedTestimonials = useMemo(() => testimonials, []);
-
-    if (isLowPerformance) {
-        return (
-            <div className="relative flex flex-col w-full justify-center overflow-hidden bg-background pb-10">
-                <ShinyText
-                    text={"What People Say About Us"}
-                    className="relative border-b-2 pb-10 z-10 text-2xl md:text-7xl text-center font-sans font-bold mb-16"
-                />
-
-                <div className="w-full px-4">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
-                        {memoizedTestimonials.map((testimonial, index) => (
-                            <TestimonialCard
-                                key={index}
-                                testimonial={testimonial}
-                                index={index}
-                                isMobile={true}
-                            />
-                        ))}
-                    </div>
-                </div>
-            </div>
-        );
-    }
 
     return (
         <div className="relative flex flex-col w-full justify-center overflow-hidden bg-background pb-10">
