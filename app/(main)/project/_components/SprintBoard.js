@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { toast } from "sonner";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -30,6 +30,7 @@ export default function SprintBoard({ sprints, projectId, orgId }) {
 
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [selectedStatus, setSelectedStatus] = useState(null);
+    const lastSprintIdRef = useRef(null);
 
     const {
         loading: issuesLoading,
@@ -45,11 +46,19 @@ export default function SprintBoard({ sprints, projectId, orgId }) {
         setFilteredIssues(newFilteredIssues);
     };
 
+    // Fetch issues when currentSprint changes
     useEffect(() => {
-        if (currentSprint.id) {
-            fetchIssues(currentSprint.id);
-        }
-    }, [currentSprint.id, fetchIssues]);
+      if (currentSprint?.id && currentSprint.id !== lastSprintIdRef.current) {
+        lastSprintIdRef.current = currentSprint.id;
+        fetchIssues(currentSprint.id);
+      }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [currentSprint?.id]);
+
+    // Update filteredIssues when issues change
+    useEffect(() => {
+        setFilteredIssues(issues);
+    }, [issues]);
 
     const handleAddIssue = (status) => {
         setSelectedStatus(status);
@@ -57,7 +66,9 @@ export default function SprintBoard({ sprints, projectId, orgId }) {
     };
 
     const handleIssueCreated = () => {
-        fetchIssues(currentSprint.id);
+        if (currentSprint?.id) {
+            fetchIssues(currentSprint.id);
+        }
     };
 
     const {
@@ -177,7 +188,11 @@ export default function SprintBoard({ sprints, projectId, orgId }) {
                                                     >
                                                         <IssueCard
                                                             issue={issue}
-                                                            onDelete={() => fetchIssues(currentSprint.id)}
+                                                            onDelete={() => {
+                                                                if (currentSprint?.id) {
+                                                                    fetchIssues(currentSprint.id);
+                                                                }
+                                                            }}
                                                             onUpdate={(updated) =>
                                                                 setIssues((issues) =>
                                                                     issues.map((issue) => {

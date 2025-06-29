@@ -57,7 +57,8 @@ export default function SprintManager({
                 status: updatedStatus.sprint.status,
             });
         }
-    }, [updatedStatus, loading, setSprint, sprint]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [updatedStatus, loading]);
 
     const getStatusText = () => {
         if (status === "COMPLETED") {
@@ -81,7 +82,8 @@ export default function SprintManager({
                 setStatus(selectedSprint.status);
             }
         }
-    }, [searchParams, sprints, setSprint, sprint.id]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [searchParams, sprints]);
 
     const handleSprintChange = (value) => {
         const selectedSprint = sprints.find((s) => s.id === value);

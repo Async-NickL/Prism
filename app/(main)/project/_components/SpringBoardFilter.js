@@ -35,7 +35,8 @@ export default function BoardFilters({ issues, onFilterChange }) {
                 (selectedPriority === "" || issue.priority === selectedPriority)
         );
         onFilterChange(filteredIssues);
-    }, [searchTerm, selectedAssignees, selectedPriority, issues, onFilterChange]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [searchTerm, selectedAssignees, selectedPriority, issues]);
 
     const toggleAssignee = (assigneeId) => {
         setSelectedAssignees((prev) =>
