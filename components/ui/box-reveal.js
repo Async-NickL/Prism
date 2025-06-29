@@ -1,28 +1,24 @@
-"use client";;
+"use client";
 import { motion, useAnimation, useInView } from "motion/react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, memo } from "react";
 
-export const BoxReveal = ({
+export const BoxReveal = memo(({
   children,
   width = "fit-content",
   boxColor = "#5046e6",
-  duration
+  duration = 0.5
 }) => {
-  const mainControls = useAnimation();
-  const slideControls = useAnimation();
-
+  const controls = useAnimation();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
 
   useEffect(() => {
     if (isInView) {
-      slideControls.start("visible");
-      mainControls.start("visible");
-    } else {
-      slideControls.start("hidden");
-      mainControls.start("hidden");
+      controls.start("visible");
     }
-  }, [isInView, mainControls, slideControls]);
+  }, [isInView, controls]);
+
+  const transition = { duration, ease: "easeIn" };
 
   return (
     <div ref={ref} style={{ position: "relative", width, overflow: "hidden" }}>
@@ -32,8 +28,8 @@ export const BoxReveal = ({
           visible: { opacity: 1, y: 0 },
         }}
         initial="hidden"
-        animate={mainControls}
-        transition={{ duration: duration ? duration : 0.5, delay: 0.25 }}>
+        animate={controls}
+        transition={{ ...transition, delay: 0.25 }}>
         {children}
       </motion.div>
       <motion.div
@@ -42,8 +38,8 @@ export const BoxReveal = ({
           visible: { left: "100%" },
         }}
         initial="hidden"
-        animate={slideControls}
-        transition={{ duration: duration ? duration : 0.5, ease: "easeIn" }}
+        animate={controls}
+        transition={transition}
         style={{
           position: "absolute",
           top: 4,
@@ -55,4 +51,6 @@ export const BoxReveal = ({
         }} />
     </div>
   );
-};
+});
+
+BoxReveal.displayName = "BoxReveal";
