@@ -197,7 +197,7 @@ export default function IssueDetailsDialog({
                             <AlertDialogTitle>Delete this issue?</AlertDialogTitle>
                             <AlertDialogDescription>
                                 This action cannot be undone. This will permanently delete the
-                                issue "{issue.title}" and remove its data.
+                                issue &quot;{issue.title}&quot; and remove its data.
                             </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
