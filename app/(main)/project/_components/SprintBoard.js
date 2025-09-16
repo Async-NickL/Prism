@@ -6,7 +6,6 @@ import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd";
 import useFetch from "@/hooks/use-fetch";
-import { Skeleton } from "@/components/ui/skeleton";
 import { data as statuses } from "./Data";
 import { getIssuesForSprint, updateIssueOrder } from "@/actions/issue";
 
@@ -77,6 +76,8 @@ export default function SprintBoard({ sprints, projectId, orgId }) {
         error: updateIssuesError,
     } = useFetch(updateIssueOrder);
 
+    const [reordering, setReordering] = useState(false);
+
     const onDragEnd = async (result) => {
         if (currentSprint.status === "PLANNED") {
             toast.warning("Start the sprint to update board");
@@ -135,8 +136,21 @@ export default function SprintBoard({ sprints, projectId, orgId }) {
         const sortedIssues = newOrderedData.sort((a, b) => a.order - b.order);
         setIssues(newOrderedData, sortedIssues);
 
+        setReordering(true);
         updateIssueOrderFn(sortedIssues);
     };
+
+    // Show a toast when reordering completes successfully
+    useEffect(() => {
+        if (reordering && !updateIssuesLoading && !updateIssuesError) {
+            toast.success("Board updated");
+            setReordering(false);
+        }
+        if (updateIssuesError) {
+            toast.error(updateIssuesError.message || "Failed to update board");
+            setReordering(false);
+        }
+    }, [reordering, updateIssuesLoading, updateIssuesError]);
 
     if (issuesError) return <div>Error loading issues</div>;
 
@@ -156,7 +170,6 @@ export default function SprintBoard({ sprints, projectId, orgId }) {
             {updateIssuesError && (
                 <p className="text-red-500 mt-2">{updateIssuesError.message}</p>
             )}
-            {(updateIssuesLoading || issuesLoading) && <Skeleton className="my-4 w-full h-8" />}
 
             <DragDropContext onDragEnd={onDragEnd}>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-4 bg-card p-4 rounded-lg overflow-x-auto">

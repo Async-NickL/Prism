@@ -20,7 +20,18 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { ExternalLink } from "lucide-react";
+import { toast } from "sonner";
 import { usePathname, useRouter } from "next/navigation";
+import {
+    AlertDialog,
+    AlertDialogContent,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogCancel,
+    AlertDialogAction,
+} from "@/components/ui/alert-dialog";
 
 import { data as statuses } from "../app/(main)/project/_components/Data";
 import { deleteIssue, updateIssue } from "@/actions/issue";
@@ -37,6 +48,7 @@ export default function IssueDetailsDialog({
 }) {
     const [status, setStatus] = useState(issue.status);
     const [priority, setPriority] = useState(issue.priority);
+    const [confirmOpen, setConfirmOpen] = useState(false);
     const { user } = useUser();
     const { membership } = useOrganization();
     const router = useRouter();
@@ -57,9 +69,11 @@ export default function IssueDetailsDialog({
     } = useFetch(updateIssue);
 
     const handleDelete = async () => {
-        if (window.confirm("Are you sure you want to delete this issue?")) {
-            deleteIssueFn(issue.id);
-        }
+        setConfirmOpen(true);
+    };
+
+    const handleConfirmDelete = async () => {
+        await deleteIssueFn(issue.id);
     };
 
     const handleStatusChange = async (newStatus) => {
@@ -74,10 +88,13 @@ export default function IssueDetailsDialog({
 
     useEffect(() => {
         if (deleted) {
+            toast.success("Issue deleted successfully");
+            setConfirmOpen(false);
             onClose();
             onDelete();
         }
         if (updated) {
+            toast.success("Issue updated");
             onUpdate(updated);
         }
     }, [deleted, updated, deleteLoading, updateLoading, onClose, onDelete, onUpdate]);
@@ -93,7 +110,7 @@ export default function IssueDetailsDialog({
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent>
+            <DialogContent className="max-h-[80vh] overflow-y-auto scrollbar-translucent mt-5">
                 <DialogHeader>
                     <div className="flex justify-between items-center">
                         <DialogTitle className="text-3xl">{issue.title}</DialogTitle>
@@ -109,11 +126,7 @@ export default function IssueDetailsDialog({
                         )}
                     </div>
                 </DialogHeader>
-                {(updateLoading || deleteLoading) && (
-                    <div className="flex justify-center py-4">
-                        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
-                    </div>
-                )}
+                {/* Removed inline spinner; we'll use toasts instead */}
                 <div className="space-y-4">
                     <div className="flex items-center space-x-2">
                         <Select value={status} onValueChange={handleStatusChange}>
@@ -177,6 +190,24 @@ export default function IssueDetailsDialog({
                         </p>
                     )}
                 </div>
+                {/* Delete confirmation modal */}
+                <AlertDialog open={confirmOpen} onOpenChange={setConfirmOpen}>
+                    <AlertDialogContent>
+                        <AlertDialogHeader>
+                            <AlertDialogTitle>Delete this issue?</AlertDialogTitle>
+                            <AlertDialogDescription>
+                                This action cannot be undone. This will permanently delete the
+                                issue "{issue.title}" and remove its data.
+                            </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                            <AlertDialogCancel disabled={deleteLoading}>No, Cancel</AlertDialogCancel>
+                            <AlertDialogAction onClick={handleConfirmDelete} disabled={deleteLoading} className="bg-red-600 hover:bg-red-700">
+                                {deleteLoading ? "Deleting..." : "Yes, Delete"}
+                            </AlertDialogAction>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialog>
             </DialogContent>
         </Dialog>
     );

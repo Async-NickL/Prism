@@ -14,7 +14,7 @@ import { formatDistanceToNow, isAfter, isBefore, format } from "date-fns";
 import useFetch from "@/hooks/use-fetch";
 import { useRouter, useSearchParams } from "next/navigation";
 import { updateSprintStatus } from "@/actions/sprints";
-import { Skeleton } from "@/components/ui/skeleton";
+import { toast } from "sonner";
 
 export default function SprintManager({
     sprint,
@@ -53,8 +53,15 @@ export default function SprintManager({
                 ...sprint,
                 status: updatedStatus.sprint.status,
             });
+            toast.success(`Sprint ${updatedStatus.sprint.status.toLowerCase()}`);
         }
     }, [updatedStatus, loading, setSprint, sprint]);
+
+    useEffect(() => {
+        if (error) {
+            toast.error(error.message || "Failed to update sprint");
+        }
+    }, [error]);
 
     const getStatusText = () => {
         if (status === "COMPLETED") {
@@ -123,7 +130,7 @@ export default function SprintManager({
                     </Button>
                 )}
             </div>
-            {loading && <Skeleton className="my-2 w-full h-8" />}
+            {/* Removed skeleton loader per request */}
             {getStatusText() && (
                 <Badge variant="" className="mt-3 ml-1 self-start">
                     {getStatusText()}

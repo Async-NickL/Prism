@@ -17,7 +17,7 @@ const Page = async ({ params }) => {
       <div className="flex flex-col items-center p-10 gap-2">
         <h1 className="text-4xl text-red-500 font-bold">404</h1>
         <ShinyText
-          text={`Project named ${project.name} not found !`}
+          text={`Project ${projectId ? `(${projectId}) ` : ''}not found!`}
           className="text-3xl text-center"
         />
         <Link href={"/organization"}>
@@ -29,7 +29,7 @@ const Page = async ({ params }) => {
     )
   } else {
     return (
-      <div className="min-h-[calc(100vh-5.5rem)] pb-10 w-full flex flex-col gap-4">
+      <div className="min-h-[calc(100vh-5.5rem)] pb-10 w-full flex flex-col gap-4 mt-4">
         <SprintCreationForm
           projectTitle={project.name}
           projectId={projectId}

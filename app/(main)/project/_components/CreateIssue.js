@@ -24,6 +24,7 @@ import useFetch from "@/hooks/use-fetch";
 import { createIssue } from "@/actions/issue";
 import { getOrganizationUsers } from "@/actions/organization";
 import { issueSchema } from "@/lib/validators";
+import { toast } from "sonner";
 
 export default function IssueCreationDrawer({
     isOpen,
@@ -81,6 +82,7 @@ export default function IssueCreationDrawer({
             reset();
             onClose();
             onIssueCreated();
+            toast.success("Issue created successfully");
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [newIssue, createIssueLoading]);

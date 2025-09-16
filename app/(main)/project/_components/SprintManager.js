@@ -10,7 +10,7 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { Skeleton } from "@/components/ui/skeleton";
+import { toast } from "sonner";
 
 import { formatDistanceToNow, isAfter, isBefore, format } from "date-fns";
 
@@ -56,9 +56,16 @@ export default function SprintManager({
                 ...sprint,
                 status: updatedStatus.sprint.status,
             });
+            toast.success(`Sprint ${updatedStatus.sprint.status.toLowerCase()}`);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [updatedStatus, loading]);
+
+    useEffect(() => {
+        if (error) {
+            toast.error(error.message || "Failed to update sprint");
+        }
+    }, [error]);
 
     const getStatusText = () => {
         if (status === "COMPLETED") {
@@ -128,7 +135,7 @@ export default function SprintManager({
                     </Button>
                 )}
             </div>
-            {loading && <Skeleton className="my-2 w-full h-8" />}
+            {/* Removed skeleton loader per request */}
             {getStatusText() && (
                 <Badge variant="" className="mt-3 ml-1 px-3 py-2 self-start max-sm:self-center">
                     {getStatusText()}

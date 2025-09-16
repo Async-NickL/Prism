@@ -149,6 +149,41 @@ html::-webkit-scrollbar {
   display: none;
 }
 
+/* Utility: hide scrollbar for specific scrollable elements */
+.no-scrollbar {
+  scrollbar-width: none;       /* Firefox */
+  -ms-overflow-style: none;    /* IE and Edge */
+}
+
+.no-scrollbar::-webkit-scrollbar { /* Chrome, Safari */
+  display: none;
+}
+
+/* Utility: theme-aware translucent scrollbar */
+.scrollbar-translucent {
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: color-mix(in oklch, var(--primary), transparent 60%) transparent;
+}
+
+.scrollbar-translucent::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scrollbar-translucent::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-translucent::-webkit-scrollbar-thumb {
+  background-color: color-mix(in oklch, var(--primary), transparent 60%);
+  border-radius: 9999px;
+  border: 2px solid transparent; /* creates padding for a slimmer look */
+  background-clip: content-box;
+}
+
+.scrollbar-translucent:hover::-webkit-scrollbar-thumb {
+  background-color: color-mix(in oklch, var(--primary), transparent 40%);
+}
+
 .shiny-text {
   color: #b5b5b5a4;
   background: linear-gradient(120deg,

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
@@ -45,20 +45,37 @@ export default function CreateProjectPage() {
     fn: createProjectFn,
   } = useFetch(createProject);
 
+  const creatingToastId = useRef(null);
+
   const onSubmit = async (data) => {
     if (!isAdmin) {
       toast.error("Only organization admins can create projects");
       return;
     }
-    createProjectFn(data);
+    if (!creatingToastId.current) {
+      creatingToastId.current = toast.loading("Creating project...");
+    }
+    await createProjectFn(data);
   };
 
   useEffect(() => {
     if (project) {
-      toast.success("Project created successfully!");
+      if (creatingToastId.current) {
+        toast.success("Project created successfully!", { id: creatingToastId.current });
+        creatingToastId.current = null;
+      } else {
+        toast.success("Project created successfully!");
+      }
       router.push(`/project/${project.id}`);
     }
   }, [project, router]);
+
+  useEffect(() => {
+    if (error && creatingToastId.current) {
+      toast.error(error.message || "Failed to create project", { id: creatingToastId.current });
+      creatingToastId.current = null;
+    }
+  }, [error]);
 
   if (!isOrgLoaded || !isUserLoaded) {
     return null;
@@ -122,13 +139,7 @@ export default function CreateProjectPage() {
                 <span className="text-destructive text-xs mt-1">{errors.description.message}</span>
               )}
             </div>
-            {loading && (
-              <div className="w-full flex justify-center mb-4">
-                <div className="bar-loader w-1/2">
-                  <div className="bar-loader-inner" style={{ left: 0, width: '30%' }} />
-                </div>
-              </div>
-            )}
+            {/* Removed visual loader in favor of toast notifications */}
             <Button
               type="submit"
               size="lg"
