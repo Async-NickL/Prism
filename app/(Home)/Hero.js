@@ -1,14 +1,24 @@
 import { BoxReveal } from "@/components/ui/box-reveal";
 import ShinyText from "@/components/ui/ShinyText";
-import Spline from "@splinetool/react-spline";
+import Prism from "@/components/Prism";
 import React from "react";
 
 const Hero = () => {
   return (
     <div className="h-[calc(100vh-3.5rem)] border-b-2 mb-10 select-none relative flex w-full justify-center items-center overflow-hidden bg-background">
-      <div className="absolute inset-0 w-full h-full max-sm:mt-[10vh] max-sm:h-[70vh]">
-        <Spline scene="https://prod.spline.design/s08getnkZ9zYv0LD/scene.splinecode" className="dark:opacity-100 opacity-20 max-md:pointer-events-none"/>
-        <div className="hider absolute bg-background h-15 z-[1] bottom-4 right-4 w-42"></div>
+      <div className="absolute inset-0 w-full h-full pointer-events-none h-screen">
+        <Prism
+          animationType="3drotate"
+          timeScale={0.5}
+          height={5.5}
+          baseWidth={8.5}
+          scale={1.1}
+          hueShift={0}
+          colorFrequency={0}
+          noise={0}
+          glow={1}
+          hoverStrength={2}
+        />
       </div>
 
       {/* Main Content Container */}
@@ -37,7 +47,6 @@ const Hero = () => {
           </BoxReveal>
         </div>
       </div>
-
     </div>
   );
 };
