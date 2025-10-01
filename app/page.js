@@ -1,8 +1,8 @@
 import React from "react";
-import Hero from "@/app/(home)/Hero";
-import Feature from "@/app/(home)/Feature";
-import About from "@/app/(home)/About";
-import Feedback from "@/app/(home)/Feedback";
+import Hero from "@/app/(Home)/Hero";
+import Feature from "@/app/(Home)/Feature";
+import About from "@/app/(Home)/About";
+import Feedback from "@/app/(Home)/Feedback";
 
 const page = () => {
   return (
